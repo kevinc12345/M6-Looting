@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b27yxfpkfvoha"]
+[gd_scene load_steps=12 format=3 uid="uid://b27yxfpkfvoha"]
 
 [ext_resource type="Shader" uid="uid://lio2wmbue2of" path="res://lessons/chest/group_outline.gdshader" id="1_12as2"]
+[ext_resource type="Script" uid="uid://ct2mll12nooce" path="res://lessons/chest/chest.gd" id="1_65g6b"]
 [ext_resource type="Texture2D" uid="uid://c3hwsm5ugp8qw" path="res://lessons/chest/bottom.png" id="1_bkc6q"]
 [ext_resource type="Texture2D" uid="uid://bnem1cahhoxdk" path="res://lessons/chest/top.png" id="2_12as2"]
 [ext_resource type="Texture2D" uid="uid://bu2jin246nel5" path="res://lessons/chest/lock.png" id="3_65g6b"]
@@ -11,12 +12,50 @@
 size = Vector2(96, 80)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4q7cj"]
+resource_local_to_scene = true
 shader = ExtResource("1_12as2")
 shader_parameter/line_color = Color(0.9976712, 0, 0.12566581, 1)
 shader_parameter/line_thickness = 5.0
 shader_parameter/viewport_scale = Vector2(1, 1)
 
+[sub_resource type="Animation" id="Animation_65g6b"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.10389283, 0.20393778),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-1, -40), Vector2(133, -118), Vector2(146, 100)]
+}
+
+[sub_resource type="Animation" id="Animation_4q7cj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1, -40)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1dn1d"]
+_data = {
+&"RESET": SubResource("Animation_4q7cj"),
+&"open": SubResource("Animation_65g6b")
+}
+
 [node name="Chest" type="Area2D"]
+script = ExtResource("1_65g6b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -38,3 +77,8 @@ texture = ExtResource("2_12as2")
 [node name="Lock" type="Sprite2D" parent="CanvasGroup"]
 position = Vector2(0, -21)
 texture = ExtResource("3_65g6b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1dn1d")
+}
